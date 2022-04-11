@@ -1,10 +1,7 @@
 #pragma once
 #include "Book.h"
-#include "Genre.h"
-#include "PhysicalBook.h"
-#include "DigitalBook.h"
+#include "Library.h"
 
-#include <limits>
 #include <string>
 #include <memory>
 #include <iostream>
@@ -35,192 +32,80 @@ T& validateInput(T& val)
     return val;
 }
 
+int homePage() {
+    int option;
+    std::cout << "Please choose what to do: "
+        << "1. add a new book\n"
+        << "2. get a list of books\n"
+        << "3. change book count\n"
+        << "4. save the library\n"
+        << "Option: ";
+    validateInput(option);
 
-
-
-int HomePage() {
-    int choice;
-
-    std::cout << "Choose an option:\n";
-    std::cout << "1. New book\n";
-    std::cout << "2. List of genres\n";
-    std::cout << "3. List of books\n";
-    std::cout << "0. End\n";
-
-
-    std::cout << "Please enter your choice: ";
- 
-    std::cin >> choice;
-    while (choice > 3 || choice < 0) {
-        std::cout << "Please enter a valid choice!\n";
-        std::cin >> choice;
+    while (option > 4 || option < 0)
+    {
+        std::cout << "Invalid input!" << std::endl;
+        validateInput(option);
     }
 
-
-    return choice;
-}
-
-int BookCreation() {
-    int choice;
-
-
-    std::cout << "Do you want to add a:\n1.Physical book\n2.Digital book\n";
-    std::cout << "Please enter your choice: ";
-
-    std::cin >> choice;
-    while (choice != 1 && choice != 2) {
-        std::cout << "\nPlease enter a valid choice!\n";
-        std::cin >> choice;
-    }
-
-    return choice;
+    return option;
 }
 
 
-void listOfGenres(std::vector <std::shared_ptr<Genre>>& genres) {
-    if (genres.size() != 0)
-    {
-        for (size_t i = 0; i < genres.size(); i++)
-        {
-            std::cout << i + 1 << ". " << genres[i]->genreName << "\n";
-        }
-    }
-    else
-    {
-        std::cout << "There are no books in the library" << std::endl;
-    }
-
-}
-
-void listOfBooks(std::vector <std::shared_ptr<Book>>& books) {
-    if (books.size() != 0)
-    {
-        for (size_t i = 0; i < books.size(); i++)
-        {
-            std::cout << i + 1 << ". " << books[i]->getBookName() << "\n";
-        }
-    }
-    else
-    {
-        std::cout << "There are no books in the library" << std::endl;
-    }
-}
-
-std::shared_ptr<Genre> createNewGenre() {
-    std::string genreName;
-    std::cout << "Please enter genre name: ";
-    std::cin >> genreName;
-    std::shared_ptr<Genre> genre (new Genre(genreName));
-    return genre;
-}
-
-std::string genreChoice(std::vector <std::shared_ptr<Genre>>& genres) {
-    std::string genre;
-    int choice;
-
-    std::cout << "Please choose a genre\n";
-    std::cout << "0: new genre\n";
-
-    for (size_t i = 0; i < genres.size(); i++)
-    {
-        std::cout << i + 1 << ": " << genres[i]->genreName << "\n";
-    }
-    std::cout << "Genre coice: ";
-    do
-    {
-        choice = validateInput(choice);
-    } while ((size_t)choice > genres.size() || choice < 0);
-
-    if (choice == 0)
-    {
-        std::shared_ptr<Genre> newGenre = createNewGenre();
-        genres.push_back(newGenre);
-        genre = newGenre->genreName;
-    }
-    else
-    {
-        genre = genres[choice - 1]->genreName;
-    }
-
-    return genre;
-}
-
-void physicalBookCreation(std::vector <std::shared_ptr<PhysicalBook>> &phyisicalBooks, std::vector <std::shared_ptr<Genre>>& genres, std::vector <std::shared_ptr<Book>>& books) {
-    std::string bookName, authorName, genre;
-    int bookId, bookCount;
-
-
+std::shared_ptr<Book> newBook() {
+    std::string bookName;
+    std::string authorName;
+    std::string GenreName;
+    
     std::cout << "Please enter the name of the book: ";
-    std::cin >> bookName;
-    std::cout << "Please enter the name of the author: ";
-    std::cin >> authorName;
+    validateInput(bookName);
+    std::cout << "\nPlease enter the name of the author: ";
+    validateInput(authorName);
+    std::cout << "\nPlease enter the name of the genre: ";
+    validateInput(GenreName);
+    std::cout << std::endl;
 
-    genre = genreChoice(genres);
 
-    std::cout << "Please enter book ID: ";
-    bookId = validateInput(bookId);
-    std::cout << "Please enter book count: ";
-    bookCount = validateInput(bookCount);
-
-    std::shared_ptr<PhysicalBook> newPhysBook (new PhysicalBook(bookName, authorName, genre, bookId, bookCount, phyisicalBooks));
-    phyisicalBooks.push_back(newPhysBook);
-    books.push_back(newPhysBook);
+    std::shared_ptr<Book> book = std::make_shared<Book>(bookName, authorName, GenreName);
+    return book;
 }
 
-void digitalBookCreation(std::vector <std::shared_ptr<DigitalBook>> &digitalBooks, std::vector <std::shared_ptr<Genre>>& genres, std::vector <std::shared_ptr<Book>> &books) {
-    std::string bookName, authorName, genre;
-
-    std::cout << "Please enter the name of the book: ";
-    std::cin >> bookName;
-    std::cout << "Please enter the name of the author: ";
-    std::cin >> authorName;
-    genre = genreChoice(genres);
-
-    std::shared_ptr<DigitalBook> newDigBook(new DigitalBook(bookName, authorName, genre));
-    digitalBooks.push_back(newDigBook);
-    books.push_back(newDigBook);
-}
 
 
 
 int main()
 {
-	std::vector <std::shared_ptr<PhysicalBook>> phyisicalBooks;
-	std::vector <std::shared_ptr<DigitalBook>> digitalBooks;
-    std::vector <std::shared_ptr<Book>> books;
-    std::vector <std::shared_ptr<Genre>> genres;
+    Library library("Library Name", "Library adress");
+    library.loadLibrary();
+    int homePageNum = 0;
+    int bookCount = 0;
 
-
-
-
-    int homePageChoice;
-    int bookCreationChoice;
-	do
-	{
-        homePageChoice = HomePage();
-        if (homePageChoice == 1)
+    do
+    {
+        homePageNum = homePage();
+        if (homePageNum == 1)
         {
-            bookCreationChoice = BookCreation();
-            if (bookCreationChoice == 1)
+            std::cout << "Please enter how many books you wish to add: ";
+            do
             {
-                physicalBookCreation(phyisicalBooks, genres, books);
-            }
-            else //BookCreation() == 2, since there is validation (bug prone)
-            {
-                digitalBookCreation(digitalBooks, genres, books);
-            }
+                validateInput(bookCount);
+            } while (bookCount <= 0);
+            library.addBook(newBook(), bookCount);
         }
-        else if (homePageChoice == 2)
+        if (homePageNum == 2)
         {
-            listOfGenres(genres);
+            library.listAllBooks();
         }
-        else if (homePageChoice == 3)
+        if (homePageNum == 3)
         {
-            listOfBooks(books);
+            library.changeBookCount();
         }
-        
-	} while (homePageChoice != 0);
-
+        if (homePageNum == 4)
+        {
+            library.saveLibrary();
+        }
+    } while (homePageNum != 0);
+    
 
     return 0;
 }

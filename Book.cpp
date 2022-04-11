@@ -31,8 +31,10 @@ std::string const Book::getAuthor() {
 	return bookAuthor;
 }
 
+std::ostream& Book::operator<<(std::ostream& stream) {
+	stream << bookName << " By: " << bookAuthor;
+	return stream;
+}
 
 
 
-
-Book::~Book() {};

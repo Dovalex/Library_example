@@ -140,16 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Book.cpp" />
-    <ClCompile Include="DigitalBook.cpp" />
-    <ClCompile Include="Genre.cpp" />
-    <ClCompile Include="PhysicalBook.cpp" />
+    <ClCompile Include="Library.cpp" />
     <ClCompile Include="TestCppProject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Book.h" />
-    <ClInclude Include="DigitalBook.h" />
-    <ClInclude Include="Genre.h" />
-    <ClInclude Include="PhysicalBook.h" />
+    <ClInclude Include="Library.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

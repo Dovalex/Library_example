@@ -2,20 +2,17 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include "Genre.h"
 
 
 
 class Book
 {
 
-protected:
+public:
+
 	std::string bookName;
 	std::string bookAuthor;
 	std::string genreName;
-public:
-
-
 
 	Book(std::string bookName, std::string bookAuthor, std::string genreName);
 
@@ -26,12 +23,7 @@ public:
 	std::string const getBookName();
 	std::string const getAuthor();
 
-
-	virtual void bookAvailibility() = 0;
-
-
-
-	~Book();
+	std::ostream& operator<<(std::ostream& stream);
 
 };
 
