@@ -23,7 +23,7 @@ public:
 
 	std::shared_ptr<int> calculateID(std::shared_ptr<Book>book);
 	void addBook(std::shared_ptr<Book>book, int count);
-	void changeBookCount();
+	void changeBookCount(int choice, int count);
 	void listAllBooks();
 	void saveLibrary();
 	void loadLibrary();

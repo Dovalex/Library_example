@@ -14,21 +14,6 @@ Library::Library(std::string  _libraryName, std::string  _libraryAdress) {
 	libraryAdress = _libraryAdress;
 }
 
-template<typename T>
-T& validateInput(T& val)
-{
-	while (true) {
-		if (std::cin >> val) {
-			break;
-		}
-		else {
-			std::cout << "Enter a valid value!\n";
-			std::cin.clear();
-			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		}
-	}
-	return val;
-}
 
 std::shared_ptr<int> Library::calculateID(std::shared_ptr<Book> book) {
 	int id = 0;
@@ -52,16 +37,8 @@ std::shared_ptr<int> Library::calculateID(std::shared_ptr<Book> book) {
 }
 
 std::shared_ptr<int> addBookCount(int &count) {
-	if (count <= 0)
-	{
-		validateInput(count);
-	}
-	else
-	{
 		std::shared_ptr <int> pCount(new int(count));
 		return pCount;
-	}
-
 }
 
 void newAuthor(std::shared_ptr<Book> book, std::vector<std::shared_ptr<std::string>> listofauthors) {
@@ -105,39 +82,16 @@ void Library::addBook(std::shared_ptr<Book> book, int count) {
 }
 
 
-void Library::changeBookCount() {
-	int choice;
-	int count;
-	std::cout << "Which book do you want to change the number of available books for?" << std::endl;
-
-	for (int i = 0; i < listOfBooks.size(); i++)
-	{
-		std::cout << i + 1 << ". " << listOfBooks[i]->bookAuthor << " "
-			<< listOfBooks[i]->bookName << " "
-			<< listOfBooks[i]->genreName << " "
-			<< std::endl;
-	}
-
-	do
-	{
-		std::cout << "Choice: ";
-		validateInput(choice);
-	} while (choice > listOfBooks.size() && choice < 0);
-
-
-	do
-	{
-		std::cout << "Enter how much books are available: ";
-		validateInput(count);
-	} while (count <= 0);
+void Library::changeBookCount(int choice, int count) {
 	*bookCount[choice] = count;
-
 }
 
 void Library::listAllBooks() {
 	for (int i = 0; i < listOfBooks.size(); i++)
 	{
-		std::cout << listOfBooks[i]->bookAuthor << " "
+		std::cout << i+1
+			<< ". "
+			<< listOfBooks[i]->bookAuthor << " "
 			<< listOfBooks[i]->bookName << " "
 			<< listOfBooks[i]->genreName << " "
 			<< std::endl;
